@@ -1,0 +1,71 @@
+HAVING CLAUSE
+
+--HAVING CLAUSE IS USED TO SPECIFY CONDITIONS LIKE WHERE CLAUSE.
+
+--BUT HAVING CLAUSE IS USED WITH GROUP BY COMMAND.
+
+--WE CANNOT USE WHERE CLAUSE WITH GROUP BY COMMAND.
+
+--Where clause is used for filtering rows and having clause is used to filtering groups.
+
+--WHERE CLAUSE DOES NOT WORK WITH AGGREGATE FUNCTIONS LIKE SUM,MIN,MAX,COUNT,AVG..
+
+--WE CAN USE HAVING CLAUSE WITH AGGREGATE FUNCTIONS.
+
+--WHERE CLAUSE CAN BE USED BEFORE THE GROUP BY CLAUSE BUT NOT AFTER THAT.
+
+--WE CAN USE WHERE AND HAVING TOGETHER IN A SINGLE QUERY.
+
+--From the point of view of performance having is slower than where and should be avoided when possible.
+
+
+create table Product_Sales(Id int primary key identity,Product_Name varchar(50), Sales_Amount int);
+select * from Product_Sales;
+insert into Product_Sales values('Keyboard',400);
+insert into Product_Sales values('Mouse',300);
+insert into Product_Sales values('Printer',5500);
+insert into Product_Sales values('Speaker',4000);
+insert into Product_Sales values('Keyboard',400);
+insert into Product_Sales values('Mouse',300);
+insert into Product_Sales values('Keyboard',400);
+insert into Product_Sales values('Mouse',300);
+insert into Product_Sales values('Printer',5500);
+insert into Product_Sales values('Speaker',4000);
+insert into Product_Sales values('Mouse',300);
+insert into Product_Sales values('Printer',5500);
+insert into Product_Sales values('Speaker',4000);
+
+
+select Product_Name, sum(Sales_Amount) as Total_Sales
+from Product_Sales 
+group by Product_Name
+having Product_Name in ('Mouse','Speaker');
+
+select Product_Name, sum(Sales_Amount) as Total_Sales
+from Product_Sales 
+where Product_Name in ('Mouse','Speaker')
+group by Product_Name;
+
+select Product_Name, sum(Sales_Amount) as Total_Sales
+from Product_Sales 
+group by Product_Name
+having sum(Sales_Amount) > 17000;
+
+select Product_Name, sum(Sales_Amount) as Total_Sales
+from Product_Sales 
+where sum(Sales_Amount) > 17000
+group by Product_Name
+
+select Product_Name, sum(Sales_Amount) as Total_Sales
+from Product_Sales 
+where Product_Name not in ('Mouse','Keyboard','Printer')
+group by Product_Name
+having sum(Sales_Amount) > 1000;
+
+sp_renamedb 'Batch_1704E', 'New_Batch';
+
+sp_rename 'Aptech_Batch','My_New_Batch';
+
+select * from My_New_Batch;
+
+sp_rename 'My_New_Batch.Std_Name', 'Student_Name';
